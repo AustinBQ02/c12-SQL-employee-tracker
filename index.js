@@ -11,7 +11,7 @@ const db = mysql.createConnection(
     password: "Password321!",
     database: "employees_db",
   },
-  console.log(`Connected to the employees_db database.`)
+  console.log(`\nConnected to the employees_db database.`)
 );
 
 // View All Departments
@@ -25,6 +25,7 @@ const viewDepartments = () => {
       return;
     }
     console.table(rows);
+    firstPrompt();
   });
 };
 
@@ -46,11 +47,12 @@ const viewRoles = () => {
       return;
     }
     console.table(rows);
+    firstPrompt();
   });
 };
 
 // View All Employees
-const viewEmployees = () => {
+const viewEmployees = async () => {
   const sql = `SELECT a.id,
     a.first_name AS "First Name",
     a.last_name AS "Last Name",
@@ -69,40 +71,46 @@ const viewEmployees = () => {
       return;
     }
     console.table(rows);
+    firstPrompt();
   });
+
+  
 };
 
-inquirer
-  .prompt([
-    {
-      type: "list",
-      message: "What would you like to do first?",
-      name: "firstChoice",
-      choices: [
-        "View All Departments",
-        "View All Roles",
-        "View All Employees",
-        "Add a Department",
-        "Add a Role",
-        "Add an Employee",
-        "Update an Employee Role",
-      ],
-    },
-  ])
-  .then((data) =>{
-    switch(data.firstChoice){
-      case "View All Departments": 
-        viewDepartments();
-        break
-      case "View All Roles":
-        viewRoles();
-        break;
-      case "View All Employees":
-        viewEmployees();
-        break;
-    }
-  }
-    // data.firstChoice === "View All Departments"
-    //   ? viewDepartments()
-    //   : console.log("You chose poorly.")
-  );
+const firstPrompt = () => {
+  console.log("\n");
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "What would you like to do first?",
+        name: "firstChoice",
+        choices: [
+          "View All Departments",
+          "View All Roles",
+          "View All Employees",
+          "Add a Department",
+          "Add a Role",
+          "Add an Employee",
+          "Update an Employee Role",
+        ],
+      },
+    ])
+    .then((data) => {
+      switch (data.firstChoice) {
+        case "View All Departments":
+          viewDepartments();
+          break;
+        case "View All Roles":
+          viewRoles();
+          break;
+        case "View All Employees":
+          viewEmployees();
+          break;
+      }
+    });
+};
+
+const init = () => firstPrompt();
+
+init();
