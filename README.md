@@ -16,6 +16,7 @@ This is challenge 12 for the UT Coding Bootcamp: SQL Employee Tracker.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Credits](#credits)
+- [Collaborators](#collaborators)
 - [License](#license)
 
 ## Installation
@@ -40,6 +41,15 @@ This is challenge 12 for the UT Coding Bootcamp: SQL Employee Tracker.
 > If you followed tutorials, include links to those here as well.
 
 Full-Stack Blog - [Professional README Guide](https://coding-boot-camp.github.io/full-stack/github/professional-readme-guide)
+
+Udemy Blog - [SQL Self Join: A Simple Way to JOIN Data in SQL](https://blog.udemy.com/sql-self-join/)
+
+## Collaborators 
+
+| Erin Peifer | Magdalene Zernick | Stephen Totten |
+|:-----------:|:-----------------:|:--------------:|
+
+
 
 ## License
 
