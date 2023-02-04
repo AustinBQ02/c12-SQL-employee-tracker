@@ -1,0 +1,24 @@
+{
+  "name": "c12-sql-employee-tracker",
+  "version": "1.0.0",
+  "description": "This is challenge 12 for the UT Coding Bootcamp: SQL Employee Tracker.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AustinBQ02/c12-SQL-employee-tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AustinBQ02/c12-SQL-employee-tracker/issues"
+  },
+  "homepage": "https://github.com/AustinBQ02/c12-SQL-employee-tracker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.4",
+    "mysql2": "^3.1.0"
+  }
+}
