@@ -5,8 +5,9 @@ SELECT id, dept_name AS "Department" FROM department
 ORDER BY dept_name;
 
 -- View All Roles
-SELECT roles.id, 
+SELECT  
     roles.title AS "Title", 
+    roles.id AS "Role ID",
     department.dept_name AS "Department", 
     roles.salary AS "Salary"
 FROM roles
