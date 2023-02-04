@@ -1,8 +1,8 @@
 USE employees_db;
 
 -- View All Departments
-SELECT id, dept_name AS "Name" FROM department
-ORDER BY Name;
+SELECT id, dept_name AS "Department" FROM department
+ORDER BY dept_name;
 
 -- View All Roles
 SELECT roles.id, 
