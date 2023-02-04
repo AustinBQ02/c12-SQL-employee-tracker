@@ -2,6 +2,8 @@ const express = require("express");
 // Import and require mysql2, inquirer8.2.4, and console.table
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
+const cTable = require('console.table');
+
 
 // Connect to database
 const db = mysql.createConnection(
@@ -13,6 +15,8 @@ const db = mysql.createConnection(
   },
   console.log(`\nConnected to the employees_db database.`)
 );
+
+// VIEW FUNCTIONS
 
 // View All Departments
 const viewDepartments = () => {
@@ -73,8 +77,6 @@ const viewEmployees = async () => {
     console.table(rows);
     firstPrompt();
   });
-
-  
 };
 
 const firstPrompt = () => {
@@ -93,6 +95,7 @@ const firstPrompt = () => {
           "Add a Role",
           "Add an Employee",
           "Update an Employee Role",
+          "Quit"
         ],
       },
     ])
@@ -107,6 +110,8 @@ const firstPrompt = () => {
         case "View All Employees":
           viewEmployees();
           break;
+        case "Quit":
+          process.exit(0);
       }
     });
 };
