@@ -193,11 +193,52 @@ const addEmployee = () => {
         fNamesAll.forEach((item) => {
           arrManagerChoices.push(item.full_name);
         });
-        console.log(`roles all`,rolesSelectAll)
-        console.log(`roles choice array`,arrRolesChoices);
-        console.log(`names all`, fNamesAll)
-        console.log(`manager choice array`, arrManagerChoices);
-        console.log()
+        inquirer
+          .prompt([
+            {
+              type: "input",
+              name: "firstName",
+              message: "Please enter the FIRST NAME of the new employee:",
+            },
+            {
+              type: "input",
+              name: "lastName",
+              message: "Please enter the LAST NAME of the new employee:",
+            },
+            {
+              type: "list",
+              name: "empRole",
+              message: "Please enter the ROLE of the new employee:",
+              choices: arrRolesChoices,
+            },
+            {
+              type: "list",
+              message: "Please select a MANAGER for the new employee:",
+              name: "empManager",
+              choices: arrManagerChoices,
+            },
+          ])
+          .then((data) => {
+            let role_id;
+            let manager_id;
+            const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`
+
+            for (let i = 0; i < rolesSelectAll.length; i++) {
+              if (rolesSelectAll[i].title === data.empRole) {
+                role_id = rolesSelectAll[i].id;
+              }
+            }
+
+            for (let i = 0; i < fNamesAll.length; i++) {
+              if (fNamesAll[i].full_name === data.empManager) {
+                manager_id = fNamesAll[i].id;
+              }
+            }
+
+            const params = [data.firstName, data.lastName, role_id, manager_id]
+
+            console.log(params)
+          });
       }
     );
   });
