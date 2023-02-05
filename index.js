@@ -237,7 +237,14 @@ const addEmployee = () => {
 
             const params = [data.firstName, data.lastName, role_id, manager_id]
 
-            console.log(params)
+            db.query(sql, params, (err, rows) => {
+              if (err) {
+                console.log(err);
+                return;
+              }
+              console.log(`Added ${data.firstName} ${data.lastName} to the database.\n`);
+              viewEmployees();
+            });
           });
       }
     );
