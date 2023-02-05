@@ -113,36 +113,48 @@ const addDepartment = () => {
 
 // Add a new role
 const addRole = () => {
-  inquirer.prompt([
-    {
-      type: "input",
-      name: "roleName",
-      message: "Please enter the NAME of the new role:",
-    },
-    {
-      type: "input",
-      name: "roleSalary",
-      message: "Please enter the SALARY of the new role:",
-    },
-    {
-      type: "list",
-      message: "Please select a DEPARTMENT for the new role:",
-      name: "roleDepartment",
-      choices: ["1", "2", "3", "4"],
+  // Look up existing departments to push to a choices array
+  db.query(`SELECT * FROM department`, (err, rows) => {
+    if (err) {
+      console.log(err);
+      return;
     }
-  ])
-  .then((data) => {
-    const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);`;
-    const params = [data.roleName, data.roleSalary, data.roleDepartment]
-    db.query(sql, params, (err, rows) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log(`Added ${data.roleName} to the database.\n`);
-      viewRoles();
+    let arrDeptChoices = [];
+    rows.forEach((item) => {
+      arrDeptChoices.push(item.dept_name);
     });
-  })
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "roleName",
+          message: "Please enter the NAME of the new role:",
+        },
+        {
+          type: "input",
+          name: "roleSalary",
+          message: "Please enter the SALARY of the new role:",
+        },
+        {
+          type: "list",
+          message: "Please select a DEPARTMENT for the new role:",
+          name: "roleDepartment",
+          choices: arrDeptChoices,
+        },
+      ])
+      .then((data) => {
+        const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);`;
+        const params = [data.roleName, data.roleSalary, data.roleDepartment];
+        db.query(sql, params, (err, rows) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          console.log(`Added ${data.roleName} to the database.\n`);
+          viewRoles();
+        });
+      });
+  });
 };
 
 // Prompts for user input
