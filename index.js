@@ -114,7 +114,7 @@ const addDepartment = () => {
 // Add a new role
 const addRole = () => {
   // Look up existing departments to push to a choices array
-  db.query(`SELECT * FROM department`, (err, deptSelectAll) => {
+  db.query(`SELECT * FROM department;`, (err, deptSelectAll) => {
     if (err) {
       console.log(err);
       return;
@@ -169,8 +169,39 @@ const addRole = () => {
 };
 
 // Add a new employee
-
-
+const addEmployee = () => {
+  // Look up existing roles for roles array
+  db.query(`SELECT * FROM roles;`, (err, rolesSelectAll) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    let arrRolesChoices = [];
+    rolesSelectAll.forEach((item) => {
+      arrRolesChoices.push(item.title);
+    });
+    // Lookup existing managers
+    db.query(
+      `SELECT id, CONCAT(first_name, ' ', last_name) AS full_name
+  FROM employee;`,
+      (err, fNamesAll) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        let arrManagerChoices = [];
+        fNamesAll.forEach((item) => {
+          arrManagerChoices.push(item.full_name);
+        });
+        console.log(`roles all`,rolesSelectAll)
+        console.log(`roles choice array`,arrRolesChoices);
+        console.log(`names all`, fNamesAll)
+        console.log(`manager choice array`, arrManagerChoices);
+        console.log()
+      }
+    );
+  });
+};
 
 // Prompts for user input
 const firstPrompt = () => {
@@ -209,6 +240,9 @@ const firstPrompt = () => {
           break;
         case "Add a Role":
           addRole();
+          break;
+        case "Add an Employee":
+          addEmployee();
           break;
         case "Quit":
           process.exit(0);
