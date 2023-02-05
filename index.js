@@ -2,8 +2,7 @@ const express = require("express");
 // Import and require mysql2, inquirer8.2.4, and console.table
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
-const cTable = require('console.table');
-
+const cTable = require("console.table");
 
 // Connect to database
 const db = mysql.createConnection(
@@ -57,7 +56,8 @@ const viewRoles = () => {
 
 // View All Employees
 const viewEmployees = async () => {
-  const sql = `SELECT a.id,
+  const sql = `
+  SELECT a.id,
     a.first_name AS "First Name",
     a.last_name AS "Last Name",
     roles.title AS "Title",
@@ -79,13 +79,42 @@ const viewEmployees = async () => {
   });
 };
 
+// Add functions
+
+const addDepartment = () => {
+  const sql = `INSERT INTO department (dept_name) VALUES (?);`;
+  let params = [];
+
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "deptName",
+        message: "Please enter the name of the department to add:",
+      },
+    ])
+    .then((data) => {
+      params = [data.deptName];
+      db.query(sql, params, (err, rows) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        console.log(`Added ${data.deptName} to the database.`)
+        console.table(rows);
+        viewDepartments();
+      });
+    });
+};
+
+// Prompts for user input
 const firstPrompt = () => {
   console.log("\n");
   inquirer
     .prompt([
       {
         type: "list",
-        message: "What would you like to do first?",
+        message: "Main Menu: What would you like to do?",
         name: "firstChoice",
         choices: [
           "View All Departments",
@@ -95,7 +124,7 @@ const firstPrompt = () => {
           "Add a Role",
           "Add an Employee",
           "Update an Employee Role",
-          "Quit"
+          "Quit",
         ],
       },
     ])
@@ -109,6 +138,9 @@ const firstPrompt = () => {
           break;
         case "View All Employees":
           viewEmployees();
+          break;
+        case "Add a Department":
+          addDepartment();
           break;
         case "Quit":
           process.exit(0);
