@@ -114,13 +114,13 @@ const addDepartment = () => {
 // Add a new role
 const addRole = () => {
   // Look up existing departments to push to a choices array
-  db.query(`SELECT * FROM department`, (err, rows) => {
+  db.query(`SELECT * FROM department`, (err, deptSelectAll) => {
     if (err) {
       console.log(err);
       return;
     }
     let arrDeptChoices = [];
-    rows.forEach((item) => {
+    deptSelectAll.forEach((item) => {
       arrDeptChoices.push(item.dept_name);
     });
     inquirer
@@ -143,8 +143,24 @@ const addRole = () => {
         },
       ])
       .then((data) => {
+        let department_id;
         const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);`;
-        const params = [data.roleName, data.roleSalary, data.roleDepartment];
+        
+        // use object from original select query to find correct department_id
+        // [{"id":1,"dept_name":"Sales"},{"id":2,"dept_name":"Engineering"}...]
+
+        for (let i = 0; i < deptSelectAll.length; i++) {
+          console.log(deptSelectAll[i])
+          if (deptSelectAll[i].dept_name === data.roleDepartment) {
+            department_id = deptSelectAll[i].id;
+            console.log(department_id)
+          }
+        }
+
+
+        const params = [data.roleName, data.roleSalary, department_id];
+        console.log(params);
+
         db.query(sql, params, (err, rows) => {
           if (err) {
             console.log(err);
