@@ -77,7 +77,8 @@ const viewEmployees = async () => {
     JOIN department 
     ON roles.department_id = department.id
     LEFT OUTER JOIN employee AS b 
-    ON a.manager_id = b.id;`;
+    ON a.manager_id = b.id
+    ORDER BY a.id;`;
 
   db.query(sql, (err, rows) => {
     if (err) {
@@ -221,7 +222,7 @@ const addEmployee = () => {
           .then((data) => {
             let role_id;
             let manager_id;
-            const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`
+            const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`;
 
             for (let i = 0; i < rolesSelectAll.length; i++) {
               if (rolesSelectAll[i].title === data.empRole) {
@@ -235,14 +236,16 @@ const addEmployee = () => {
               }
             }
 
-            const params = [data.firstName, data.lastName, role_id, manager_id]
+            const params = [data.firstName, data.lastName, role_id, manager_id];
 
             db.query(sql, params, (err, rows) => {
               if (err) {
                 console.log(err);
                 return;
               }
-              console.log(`Added ${data.firstName} ${data.lastName} to the database.\n`);
+              console.log(
+                `Added ${data.firstName} ${data.lastName} to the database.\n`
+              );
               viewEmployees();
             });
           });
@@ -250,6 +253,98 @@ const addEmployee = () => {
     );
   });
 };
+
+// UPDATE FUNCTIONS
+
+// Update An Employee 
+const updateEmployee = () => {
+
+  // Look up existing roles for roles array
+  db.query(`SELECT * FROM roles;`, (err, rolesSelectAll) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    let arrRolesChoices = [];
+    rolesSelectAll.forEach((item) => {
+      arrRolesChoices.push(item.title);
+    });
+    // Lookup existing employees to use in employee list & manager list
+    db.query(
+      `SELECT id, CONCAT(first_name, ' ', last_name) AS full_name
+  FROM employee;`,
+      (err, fNamesAll) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        let arrNameChoices = [];
+        fNamesAll.forEach((item) => {
+          arrNameChoices.push(item.full_name);
+        });
+        inquirer
+          .prompt([
+            {
+              type: "list",
+              name: "empNameSelect",
+              message: "Please select the NAME of the employee to update:",
+              choices: arrNameChoices
+            },
+            {
+              type: "list",
+              name: "empRoleSelect",
+              message: "Please select the new ROLE for this employee:",
+              choices: arrRolesChoices
+            },
+            {
+              type: "list",
+              name: "empManagerSelect",
+              message: "Please select the new MANAGER for this employee:",
+              choices: arrNameChoices,
+            },
+          ])
+          .then((data) => {
+            let role_id;
+            let manager_id;
+            let id;
+            // Update Employee Role & Manager together
+            const sql = `UPDATE employee SET role_id = ?, manager_id = ? WHERE id = ?;`;
+
+            for (let i = 0; i < rolesSelectAll.length; i++) {
+              if (rolesSelectAll[i].title === data.empRoleSelect) {
+                role_id = rolesSelectAll[i].id;
+              }
+            } 
+
+            for (let i = 0; i < fNamesAll.length; i++) {
+              if (fNamesAll[i].full_name === data.empManagerSelect) {
+                manager_id = fNamesAll[i].id;
+              }
+            }
+
+            for (let i = 0; i < fNamesAll.length; i++) {
+              if (fNamesAll[i].full_name === data.empNameSelect) {
+                id = fNamesAll[i].id;
+              }
+            } 
+
+            const params = [role_id, manager_id, id];
+
+            db.query(sql, params, (err, rows) => {
+              if (err) {
+                console.log(err);
+                return;
+              }
+              console.log(
+                `\nDone! ${data.empNameSelect} is now ${data.empRoleSelect}, reporting to ${data.empManagerSelect}.\n`
+              );
+              viewEmployees();
+            });
+          });
+        }
+      );
+    });
+  };
 
 // Prompts for user input
 const firstPrompt = () => {
@@ -267,7 +362,7 @@ const firstPrompt = () => {
           "Add a Department",
           "Add a Role",
           "Add an Employee",
-          "Update an Employee Role",
+          "Update an Employee Role & Manager",
           "Quit",
         ],
       },
@@ -291,6 +386,9 @@ const firstPrompt = () => {
           break;
         case "Add an Employee":
           addEmployee();
+          break;
+        case "Update an Employee Role & Manager":
+          updateEmployee();
           break;
         case "Quit":
           process.exit(0);

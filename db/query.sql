@@ -44,6 +44,9 @@ UPDATE employee SET role_id = ? WHERE id = ?;
 -- Update Managers
 UPDATE employee SET manager_id = ? WHERE id = ?;
 
+-- Update Employee Role & Manager together
+UPDATE employee SET role_id = ?, manager_id = ? WHERE id = ?;
+
 -- View Employees by Manager
 SELECT a.id,
     a.first_name AS "First Name",
