@@ -26,10 +26,8 @@ This is challenge 12 for the UT Coding Bootcamp: SQL Employee Tracker.
 ## Usage
 
 > Provide instructions and examples for use. Include screenshots as needed.
->   
-> To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:  
->   
->   `![alt text](assets/images/screenshot.png)`
+
+
 
 
 ## Credits
@@ -44,11 +42,15 @@ Full-Stack Blog - [Professional README Guide](https://coding-boot-camp.github.io
 
 Udemy Blog - [SQL Self Join: A Simple Way to JOIN Data in SQL](https://blog.udemy.com/sql-self-join/)
 
+Rebecca Girndt - https://github.com/Re-Gi - _demystifying async await_
+
 ## Collaborators 
 
-| Erin Peifer | Magdalene Zernick | Stephen Totten |
-|:-----------:|:-----------------:|:--------------:|
 
+|   <h3><b>Study   |      Group     | Partners</h3></b> |
+|:----------------:|:--------------:|:-----------------:|
+| Harrison Boatman | Josh Goeke     | Nick McCarthy     |
+| Erin Peifer      | Stephen Totten | Magdalene Zernick |
 
 
 ## License

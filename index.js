@@ -209,7 +209,7 @@ const addEmployee = () => {
             {
               type: "list",
               name: "empRole",
-              message: "Please enter the ROLE of the new employee:",
+              message: "Please select the ROLE of the new employee:",
               choices: arrRolesChoices,
             },
             {
@@ -256,9 +256,8 @@ const addEmployee = () => {
 
 // UPDATE FUNCTIONS
 
-// Update An Employee 
+// Update An Employee
 const updateEmployee = () => {
-
   // Look up existing roles for roles array
   db.query(`SELECT * FROM roles;`, (err, rolesSelectAll) => {
     if (err) {
@@ -288,13 +287,13 @@ const updateEmployee = () => {
               type: "list",
               name: "empNameSelect",
               message: "Please select the NAME of the employee to update:",
-              choices: arrNameChoices
+              choices: arrNameChoices,
             },
             {
               type: "list",
               name: "empRoleSelect",
               message: "Please select the new ROLE for this employee:",
-              choices: arrRolesChoices
+              choices: arrRolesChoices,
             },
             {
               type: "list",
@@ -314,7 +313,7 @@ const updateEmployee = () => {
               if (rolesSelectAll[i].title === data.empRoleSelect) {
                 role_id = rolesSelectAll[i].id;
               }
-            } 
+            }
 
             for (let i = 0; i < fNamesAll.length; i++) {
               if (fNamesAll[i].full_name === data.empManagerSelect) {
@@ -326,7 +325,7 @@ const updateEmployee = () => {
               if (fNamesAll[i].full_name === data.empNameSelect) {
                 id = fNamesAll[i].id;
               }
-            } 
+            }
 
             const params = [role_id, manager_id, id];
 
@@ -341,10 +340,52 @@ const updateEmployee = () => {
               viewEmployees();
             });
           });
-        }
-      );
-    });
-  };
+      }
+    );
+  });
+};
+
+// BONUS BONUS
+
+// View Employees by Manager
+const viewEmpByManager = async () => {
+  try {
+    // Query DB to get list of current managers
+    let managers = await db.promise().query(`SELECT id AS value,
+      CONCAT(first_name, ' ',last_name) AS name 
+      FROM employee WHERE manager_id IS NULL ORDER BY first_name;`);
+
+    // Prompt user to select a manager to view
+    const mgrID = await inquirer.prompt([
+      {
+        type: "list",
+        name: "id",
+        message: "Please select a manager to view:",
+        choices: [...managers[0]],
+      },
+    ]);
+
+    // Query DB to get current employees of selected manager
+    let sql = `
+      SELECT employee.id AS "ID",
+        CONCAT(first_name, ' ', last_name) AS "Employee Name",
+        roles.title AS "Title",
+        department.dept_name AS "Department",
+        roles.salary AS "Salary"
+      FROM employee
+      JOIN roles ON role_id = roles.id
+      JOIN department ON roles.department_id = department.id
+      WHERE manager_id = ? ORDER BY "Employee Name";`;
+    
+    const empsByManager = await db.promise().query(sql, mgrID.id)
+    console.table('\n', empsByManager[0])
+
+    viewEmployees();
+    
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 // Prompts for user input
 const firstPrompt = () => {
@@ -363,6 +404,7 @@ const firstPrompt = () => {
           "Add a Role",
           "Add an Employee",
           "Update an Employee Role & Manager",
+          "View Employees by Manager",
           "Quit",
         ],
       },
@@ -389,6 +431,9 @@ const firstPrompt = () => {
           break;
         case "Update an Employee Role & Manager":
           updateEmployee();
+          break;
+        case "View Employees by Manager":
+          viewEmpByManager();
           break;
         case "Quit":
           process.exit(0);
