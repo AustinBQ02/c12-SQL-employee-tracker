@@ -32,12 +32,6 @@ This is challenge 12 for the UT Coding Bootcamp: SQL Employee Tracker.
 
 ## Credits
 
-> List your collaborators, if any, with links to their GitHub profiles.
-> 
-> If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-> 
-> If you followed tutorials, include links to those here as well.
-
 Full-Stack Blog - [Professional README Guide](https://coding-boot-camp.github.io/full-stack/github/professional-readme-guide)
 
 Udemy Blog - [SQL Self Join: A Simple Way to JOIN Data in SQL](https://blog.udemy.com/sql-self-join/)
@@ -47,10 +41,10 @@ Rebecca Girndt - https://github.com/Re-Gi - _demystifying async await_
 ## Collaborators 
 
 
-|   <h3><b>Study   |      Group     | Partners</h3></b> |
+|   Study   |      Group     | Partners |
 |:----------------:|:--------------:|:-----------------:|
-| Harrison Boatman | Josh Goeke     | Nick McCarthy     |
-| Erin Peifer      | Stephen Totten | Magdalene Zernick |
+| [Harrison Boatman](https://github.com/harrisonboatman) | [Josh Goeke](https://github.com/joshuagoeke)     | [Nick McCarthy](https://github.com/Nick-McCarthy)     |
+| [Erin Peifer](https://github.com/Airen22)      | [Stephen Totten](https://github.com/Crothos) | [Magdalene Zernick](https://github.com/MZernick) |
 
 
 ## License

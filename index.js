@@ -380,7 +380,7 @@ const viewEmpByManager = async () => {
     const empsByManager = await db.promise().query(sql, mgrID.id)
     console.table('\n', empsByManager[0])
 
-    viewEmployees();
+    firstPrompt();
     
   } catch (err) {
     console.log(err);
