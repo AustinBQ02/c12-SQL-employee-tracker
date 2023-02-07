@@ -85,10 +85,7 @@ DELETE FROM roles WHERE id = ?;
 DELETE FROM employee WHERE id = ?;
 
 -- View Total Salary by Department
-SELECT department.dept_name AS "Department", 
-    SUM(roles.salary) AS "Utilized Budget"
-FROM roles
-JOIN department 
-ON roles.department_id = department.id
-GROUP BY department.dept_name
-ORDER BY SUM(roles.salary) DESC;
+SELECT department.dept_name AS 'Department', SUM(roles.salary) AS 'Total Salary'
+FROM employee JOIN roles ON role_id = roles.id
+JOIN department ON roles.department_id = department.id
+GROUP BY department.dept_name ORDER BY 'Salary' DESC;

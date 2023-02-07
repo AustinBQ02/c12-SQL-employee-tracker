@@ -423,6 +423,11 @@ const viewEmpByDepartment = async () => {
   }
 };
 
+
+// View Total Salary (Utilized Budget) by Department
+
+
+
 // Prompts for user input
 const firstPrompt = () => {
   console.log("\n");
