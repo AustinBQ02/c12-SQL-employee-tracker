@@ -30,7 +30,7 @@ const viewDepartments = () => {
       console.log(err);
       return;
     }
-    console.table(rows);
+    console.table(`\n`, rows);
     firstPrompt();
   });
 };
@@ -53,7 +53,7 @@ const viewRoles = () => {
       console.log(err);
       return;
     }
-    console.table(rows);
+    console.table(`\n`, rows);
     firstPrompt();
   });
 };
@@ -85,7 +85,7 @@ const viewEmployees = async () => {
       console.log(err);
       return;
     }
-    console.table(rows);
+    console.table(`\n`, rows);
     firstPrompt();
   });
 };
@@ -345,7 +345,7 @@ const updateEmployee = () => {
   });
 };
 
-// BONUS BONUS
+// BONUS BONUS BONUS BONUS BONUS BONUS BONUS BONUS
 
 // View Employees by Manager
 const viewEmpByManager = async () => {
@@ -360,7 +360,7 @@ const viewEmpByManager = async () => {
       {
         type: "list",
         name: "id",
-        message: "Please select a manager to view:",
+        message: "Please select a MANAGER to view:",
         choices: [...managers[0]],
       },
     ]);
@@ -376,12 +376,48 @@ const viewEmpByManager = async () => {
       JOIN roles ON role_id = roles.id
       JOIN department ON roles.department_id = department.id
       WHERE manager_id = ? ORDER BY "Employee Name";`;
-    
-    const empsByManager = await db.promise().query(sql, mgrID.id)
-    console.table('\n', empsByManager[0])
+
+    const empsByManager = await db.promise().query(sql, mgrID.id);
+    console.table("\n", empsByManager[0]);
 
     firstPrompt();
-    
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// View Employees by Department
+const viewEmpByDepartment = async () => {
+  try {
+    // Query DB to get list of current departments
+    let depts = await db.promise().query(`SELECT id AS value, dept_name AS name FROM department;`);
+
+    // Prompt user to select a department to view
+    const deptID = await inquirer.prompt([
+      {
+        type: "list",
+        name: "id",
+        message: "Please select a DEPARTMENT to view:",
+        choices: [...depts[0]],
+      },
+    ]);
+
+    // Query DB to get current employees of selected department
+    let sql = `
+    SELECT department.dept_name AS Department, a.id AS 'ID',
+      CONCAT(a.first_name, ' ', a.last_name) AS "Employee Name",
+      roles.title AS "Title", roles.salary AS "Salary",
+      CONCAT(b.first_name, " ", b.last_name) AS "Manager"
+    FROM employee AS a
+    JOIN roles ON a.role_id = roles.id
+    JOIN department ON roles.department_id = department.id
+    LEFT OUTER JOIN employee AS b ON a.manager_id = b.id
+    WHERE department_id = ? ORDER BY a.manager_id ASC, a.first_name;`;
+
+    const empsByDept = await db.promise().query(sql, deptID.id);
+    console.table(`\n`, empsByDept[0]);
+
+    firstPrompt();
   } catch (err) {
     console.log(err);
   }
@@ -405,6 +441,7 @@ const firstPrompt = () => {
           "Add an Employee",
           "Update an Employee Role & Manager",
           "View Employees by Manager",
+          "View Employees by Department",
           "Quit",
         ],
       },
@@ -434,6 +471,9 @@ const firstPrompt = () => {
           break;
         case "View Employees by Manager":
           viewEmpByManager();
+          break;
+        case "View Employees by Department":
+          viewEmpByDepartment();
           break;
         case "Quit":
           process.exit(0);
