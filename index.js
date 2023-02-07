@@ -390,7 +390,9 @@ const viewEmpByManager = async () => {
 const viewEmpByDepartment = async () => {
   try {
     // Query DB to get list of current departments
-    let depts = await db.promise().query(`SELECT id AS value, dept_name AS name FROM department;`);
+    let depts = await db
+      .promise()
+      .query(`SELECT id AS value, dept_name AS name FROM department;`);
 
     // Prompt user to select a department to view
     const deptID = await inquirer.prompt([
@@ -423,11 +425,24 @@ const viewEmpByDepartment = async () => {
   }
 };
 
-
 // View Total Salary (Utilized Budget) by Department
+const viewTotalSalary = async () => {
+  try {
+    // Query DB to get SUM salary GROUPED by Dept
+    const totalSalary = await db.promise().query(`
+    SELECT department.dept_name AS 'Department', SUM(roles.salary) AS 'Total Salary'
+    FROM employee JOIN roles ON role_id = roles.id
+    JOIN department ON roles.department_id = department.id
+    GROUP BY department.dept_name ORDER BY 'Salary' DESC;
+  `);
 
+    console.table("\n", totalSalary[0]);
 
-
+    firstPrompt();
+  } catch (err) {
+    console.log(err);
+  }
+};
 // Prompts for user input
 const firstPrompt = () => {
   console.log("\n");
@@ -447,6 +462,7 @@ const firstPrompt = () => {
           "Update an Employee Role & Manager",
           "View Employees by Manager",
           "View Employees by Department",
+          "View Total Salary by Department",
           "Quit",
         ],
       },
@@ -479,6 +495,9 @@ const firstPrompt = () => {
           break;
         case "View Employees by Department":
           viewEmpByDepartment();
+          break;
+        case "View Total Salary by Department":
+          viewTotalSalary();
           break;
         case "Quit":
           process.exit(0);
