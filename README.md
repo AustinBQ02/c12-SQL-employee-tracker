@@ -1,15 +1,18 @@
 # c12-SQL-employee-tracker
 This is challenge 12 for the UT Coding Bootcamp: SQL Employee Tracker.
 
+See [Instructions & Acceptance Criteria](https://github.com/AustinBQ02/c12-SQL-employee-tracker/issues/1)
 
 ## Description
 
-> Provide a short description explaining the what, why, and how of your project. Use the following questions as a guide:  
->   
-> - What was your motivation?  
-> - Why did you build this project? (Note: the answer is not "Because it was a homework assignment.")  
-> - What problem does it solve?  
-> - What did you learn?  
+This project is a CLI tool that enables the user to view, add, or update employee data for a company.
+
+Node.js, Inquirer, and MySQL were the primary tools used. 
+
+
+Primary Lessons Learned: 
+- New tools don't change the fundamentals.
+- Eureka moment where async await finally clicked.
 
 ## Table of Contents
 
@@ -21,7 +24,12 @@ This is challenge 12 for the UT Coding Bootcamp: SQL Employee Tracker.
 
 ## Installation
 
-> What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
+Clone and run locally from your command line: `node index.js`
+
+Dependencies: 
+- Inquirer - https://www.npmjs.com/package/inquirer/v/8.2.4
+- Mysql2 - https://www.npmjs.com/package/mysql2
+- Console.table - https://www.npmjs.com/package/console.table
 
 ## Usage
 
@@ -47,6 +55,7 @@ Selecting `View All Departments` will display all departments, then return you t
 
 You will be prompted to either make a SELECTION or ENTER input when required:
 
+![Add Department](./assets/add-dept.jpg)
 
 
 ## Credits
