@@ -25,8 +25,27 @@ This is challenge 12 for the UT Coding Bootcamp: SQL Employee Tracker.
 
 ## Usage
 
-> Provide instructions and examples for use. Include screenshots as needed.
+[Walk Through Video](https://drive.google.com/file/d/1qfSAwMQpdRBDVqeCqYanAOj8tYZaJbCy/view?usp=sharing)
 
+Main Menu - Use arrow keys to select options: 
+![Main Menu](./assets/main-menu.jpg)
+
+<br>
+
+Selecting `View All Departments` will display all departments, then return you to Main Menu: 
+![View All Departments](./assets/view-depts.jpg)
+
+<br>
+
+![View All Roles](./assets/view-roles.jpg)
+
+<br>
+
+![View All Roles](./assets/view-emps.jpg)
+
+<br>
+
+You will be prompted to either make a SELECTION or ENTER input when required:
 
 
 
